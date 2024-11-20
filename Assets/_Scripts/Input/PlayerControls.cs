@@ -44,6 +44,33 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""e09f778b-2e56-43fc-a14b-46437bb012cf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Gun01"",
+                    ""type"": ""Button"",
+                    ""id"": ""5c08efe6-1d61-4acb-b0cc-f33c207b3a1e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Gun02"",
+                    ""type"": ""Button"",
+                    ""id"": ""8c249b22-6f11-4e51-965d-24b5e88dd37e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -134,6 +161,50 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""71c4f995-8c7f-464f-a80b-6ff9b497d9f6"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""66962523-4ae4-439c-97c7-f0a64d9b484c"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0deb8ebe-714a-48d6-863c-d673e13700e6"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Gun01"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a83f1773-a74d-4d5d-97e6-d1ca40527498"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Gun02"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -167,6 +238,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Astronaut = asset.FindActionMap("Astronaut", throwIfNotFound: true);
         m_Astronaut_Move = m_Astronaut.FindAction("Move", throwIfNotFound: true);
         m_Astronaut_Jump = m_Astronaut.FindAction("Jump", throwIfNotFound: true);
+        m_Astronaut_Shoot = m_Astronaut.FindAction("Shoot", throwIfNotFound: true);
+        m_Astronaut_Gun01 = m_Astronaut.FindAction("Gun01", throwIfNotFound: true);
+        m_Astronaut_Gun02 = m_Astronaut.FindAction("Gun02", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -230,12 +304,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private List<IAstronautActions> m_AstronautActionsCallbackInterfaces = new List<IAstronautActions>();
     private readonly InputAction m_Astronaut_Move;
     private readonly InputAction m_Astronaut_Jump;
+    private readonly InputAction m_Astronaut_Shoot;
+    private readonly InputAction m_Astronaut_Gun01;
+    private readonly InputAction m_Astronaut_Gun02;
     public struct AstronautActions
     {
         private @PlayerControls m_Wrapper;
         public AstronautActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Astronaut_Move;
         public InputAction @Jump => m_Wrapper.m_Astronaut_Jump;
+        public InputAction @Shoot => m_Wrapper.m_Astronaut_Shoot;
+        public InputAction @Gun01 => m_Wrapper.m_Astronaut_Gun01;
+        public InputAction @Gun02 => m_Wrapper.m_Astronaut_Gun02;
         public InputActionMap Get() { return m_Wrapper.m_Astronaut; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -251,6 +331,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @Shoot.started += instance.OnShoot;
+            @Shoot.performed += instance.OnShoot;
+            @Shoot.canceled += instance.OnShoot;
+            @Gun01.started += instance.OnGun01;
+            @Gun01.performed += instance.OnGun01;
+            @Gun01.canceled += instance.OnGun01;
+            @Gun02.started += instance.OnGun02;
+            @Gun02.performed += instance.OnGun02;
+            @Gun02.canceled += instance.OnGun02;
         }
 
         private void UnregisterCallbacks(IAstronautActions instance)
@@ -261,6 +350,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @Shoot.started -= instance.OnShoot;
+            @Shoot.performed -= instance.OnShoot;
+            @Shoot.canceled -= instance.OnShoot;
+            @Gun01.started -= instance.OnGun01;
+            @Gun01.performed -= instance.OnGun01;
+            @Gun01.canceled -= instance.OnGun01;
+            @Gun02.started -= instance.OnGun02;
+            @Gun02.performed -= instance.OnGun02;
+            @Gun02.canceled -= instance.OnGun02;
         }
 
         public void RemoveCallbacks(IAstronautActions instance)
@@ -300,5 +398,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnShoot(InputAction.CallbackContext context);
+        void OnGun01(InputAction.CallbackContext context);
+        void OnGun02(InputAction.CallbackContext context);
     }
 }
