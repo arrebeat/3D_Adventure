@@ -52,7 +52,7 @@ MonoBehaviour:
   maxShots: 6
   timeBetweenShots: 0.3
   reloadTime: 1
-  bulletSpeed: 50
+  bulletSpeed: 75
   _currentShots: 0
   _reloading: 0
 --- !u!1 &2111452082905267063
