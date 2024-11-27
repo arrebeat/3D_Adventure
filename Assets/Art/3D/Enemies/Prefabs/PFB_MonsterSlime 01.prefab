@@ -862,7 +862,7 @@ GameObject:
   - component: {fileID: 6983442274928476050}
   - component: {fileID: 7443898874300591051}
   m_Layer: 0
-  m_Name: PFB_MonsterSlime_01
+  m_Name: PFB_MonsterSlime 01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

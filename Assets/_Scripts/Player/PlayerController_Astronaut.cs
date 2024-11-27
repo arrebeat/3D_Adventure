@@ -6,8 +6,9 @@ using UnityEngine.InputSystem.Interactions;
 using UnityEngine.Events;
 using System;
 using Unity.Mathematics;
+using System.Linq;
 
-public class PlayerController_Astronaut : MonoBehaviour
+public class PlayerController_Astronaut : MonoBehaviour, IDamageable
 {
     public Rigidbody rb { get; private set; }
     public Animator animator { get; private set; }
@@ -37,12 +38,23 @@ public class PlayerController_Astronaut : MonoBehaviour
     [SerializeField]
     private Camera playerCamera;
 
+    [Header("Damage")]
+    public Color damageFlashColor;
+    public float damageFlashDuration = .1f;
+    [SerializeField]
+    private List<FlashColor> _flashColors;
+
+    void OnValidate()
+    {
+        _flashColors = GetComponentsInChildren<FlashColor>().ToList();
+    }
+    
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
         meshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
-        
+
         _playerControls = new PlayerControls();
     }
 
@@ -111,35 +123,15 @@ public class PlayerController_Astronaut : MonoBehaviour
         rb.AddForce(_forceDirection, ForceMode.Impulse);   
         _forceDirection = Vector3.zero;
 
-        /*if (_moveInput.sqrMagnitude > 0)
-        {
-            isMoving = true;
-        }
-        else
-        {
-            isMoving = false;
-        }*/
-
         if (rb.velocity.y < 0f)
             rb.velocity -= Vector3.down * Physics.gravity.y * _fallForce * Time.fixedDeltaTime;
 
         Vector3 horizontalVelocity = rb.velocity;
         horizontalVelocity.y = 0;
+        
         if (horizontalVelocity.sqrMagnitude > _runMaxSpeed * _runMaxSpeed)
             rb.velocity = horizontalVelocity.normalized * _runMaxSpeed + Vector3.up * rb.velocity.y;
     }
-
-    /*private void AnimatorTriggerCheck()
-    {
-        if (isMoving)
-        {
-            animator.SetTrigger("run");
-        }
-        else if (!isMoving)
-        {
-            animator.SetTrigger("idle");
-        }
-    }*/
 
     private Vector3 GetCameraRight(Camera playerCamera)
     {
@@ -162,6 +154,17 @@ public class PlayerController_Astronaut : MonoBehaviour
             return true;
         else
             return false;
+    }
+    
+    public void Damage(float dmg)
+    {
+        _flashColors.ForEach(i => i.flashColor = damageFlashColor);
+        _flashColors.ForEach(i => i.flashDuration = damageFlashDuration);
+        _flashColors.ForEach(i => i.Flash());
+    }
+    public void Damage(float dmg, Vector3 dir)
+    {
+        Damage(dmg);
     }
 
     #region INPUT CALLBACKS
@@ -204,6 +207,7 @@ public class PlayerController_Astronaut : MonoBehaviour
     {
         jumpPressed = false;
     }
+
     #endregion
 
 }

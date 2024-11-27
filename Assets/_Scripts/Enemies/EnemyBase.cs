@@ -12,25 +12,31 @@ namespace Enemy
 
         [SerializeField]
         private float _currentHp;
-        private Collider _collider;
 
         [Header("Spawn")]
+        public Transform model;
         public bool useSpawnEase;
         public Ease  spawnEase = Ease.OutBack;
         public float spawnEaseDuration = 0.5f;
         public float timeToDestroy = 1.5f;
 
-        [Header("Animation")]
-        [SerializeField]
-        private AnimationBase _animationBase;
+        public bool lookAtPlayer = false;
 
-        public FlashColor flashColor;
-        public ParticleSystem particlesDamage;
+        private AnimationBase _animationBase;
+        private Collider _collider;
+        private FlashColor _flashColor;
+        private ParticleSystem _particlesDamage;
+        private PlayerController_Astronaut _player;
         
         void Awake()
         {
             _animationBase = GetComponent<AnimationBase>();
             _collider = GetComponent<Collider>();
+            _flashColor = GetComponent<FlashColor>();
+            _particlesDamage = GetComponentInChildren<ParticleSystem>();
+
+            GameObject playerObject = GameObject.Find("Player");
+            _player = playerObject.GetComponent<PlayerController_Astronaut>();
         }
 
         void Start()
@@ -49,18 +55,41 @@ namespace Enemy
             _currentHp = maxHp;
         }
 
+        public virtual void Update()
+        {
+            if (lookAtPlayer)
+            {
+                model.transform.LookAt(_player.transform.position);
+            }
+        }
+
         public void OnDamage(float dmg)
         {
             _currentHp -= dmg;
             
-            if (flashColor != null) flashColor.Flash();
-            if (particlesDamage != null) particlesDamage.Emit(20);
+            if (_flashColor != null) _flashColor.Flash();
+            if (_particlesDamage != null) _particlesDamage.Emit(20);
 
             if (_currentHp <= 0) Kill();
         }
         public void Damage(float dmg)
         {
             OnDamage(dmg);
+        }
+        public void Damage(float dmg, Vector3 dir)
+        {
+            OnDamage(dmg);
+            transform.DOMove(transform.position - dir, .1f);
+        }
+
+        void OnCollisionEnter(Collision other)
+        {
+            PlayerController_Astronaut p = other.transform.GetComponent<PlayerController_Astronaut>();
+
+            if (p != null)
+            {
+                p.Damage(1);
+            }
         }
 
         protected virtual void Kill()
@@ -78,13 +107,14 @@ namespace Enemy
         #region ANIMATION
         private void SpawnAnimation()
         {
-            transform.DOScale(-1, spawnEaseDuration + Random.Range(0.1f, 0.5f)).SetEase(spawnEase).From();
+            model.transform.DOScale(-1, spawnEaseDuration + Random.Range(0.1f, 0.5f)).SetEase(spawnEase).From();
         }
 
         public void PlayAnimationByTrigger(AnimationType animationType)
         {
             _animationBase.PlayAnimationByTrigger(animationType);
         }
+
 
         #endregion
     }

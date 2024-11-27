@@ -29,13 +29,14 @@ namespace ArreTools.StateMachine
             statesDictionary.Add(typeEnum, new StateBase());    
         }
 
-        public void SwitchState(T state)
+        public void SwitchState(T state, params object[] objs)
         {
+            Debug.Log(state + " ARRE");
             if (_currentState != null)
                 _currentState.OnStateExit();
 
             _currentState = statesDictionary[state];
-            _currentState.OnStateEnter();
+            _currentState.OnStateEnter(objs);
         }
 
         void Update()

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2315572194979164285}
   - component: {fileID: 2278745107762933844}
   m_Layer: 0
-  m_Name: Gun_Revolver
+  m_Name: Gun_Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,7 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f74a9a9bbd885a343a45085fea1b6298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlayer: 1
   projectilePrefab: {fileID: 8575416159569373389, guid: 87e88892b1da0d84f971596a36f74160,
     type: 3}
   shootPoint: {fileID: 2315572194979164285}

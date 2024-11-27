@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerState_Idle : StateBase
 {
-    public override void OnStateEnter(object o = null)
+    public override void OnStateEnter(params object[] objs)
     {
 
     }

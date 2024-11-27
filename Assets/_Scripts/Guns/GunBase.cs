@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 
 public class GunBase : MonoBehaviour
 {
+    public bool isPlayer = false;
     public ProjectileBase projectilePrefab;
     public Transform shootPoint;
     public List<UIGunUpdater> uIGunUpdaters;
@@ -23,13 +24,13 @@ public class GunBase : MonoBehaviour
     
     [Space(10)]
     [SerializeField]
-    private int _currentShots;
+    public int _currentShots;
     [SerializeField]
-    private bool _reloading; 
+    public bool _reloading; 
    
     void Awake()
     {
-        GetAllUis();
+        if (isPlayer) GetAllUis();
     }
 
     public virtual void Shoot()
