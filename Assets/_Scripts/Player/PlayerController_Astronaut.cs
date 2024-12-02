@@ -156,13 +156,13 @@ public class PlayerController_Astronaut : MonoBehaviour, IDamageable
             return false;
     }
     
-    public void Damage(float dmg)
+    public void Damage(int dmg)
     {
         _flashColors.ForEach(i => i.flashColor = damageFlashColor);
         _flashColors.ForEach(i => i.flashDuration = damageFlashDuration);
         _flashColors.ForEach(i => i.Flash());
     }
-    public void Damage(float dmg, Vector3 dir)
+    public void Damage(int dmg, Vector3 dir)
     {
         Damage(dmg);
     }

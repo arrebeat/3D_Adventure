@@ -8,10 +8,10 @@ namespace Enemy
 {
     public class EnemyBase : MonoBehaviour, IDamageable
     {
-        public float maxHp = 10f;
+        public int maxHp = 10;
 
         [SerializeField]
-        private float _currentHp;
+        private int _currentHp;
 
         [Header("Spawn")]
         public Transform model;
@@ -63,7 +63,7 @@ namespace Enemy
             }
         }
 
-        public void OnDamage(float dmg)
+        public void OnDamage(int dmg)
         {
             _currentHp -= dmg;
             
@@ -72,11 +72,11 @@ namespace Enemy
 
             if (_currentHp <= 0) Kill();
         }
-        public void Damage(float dmg)
+        public void Damage(int dmg)
         {
             OnDamage(dmg);
         }
-        public void Damage(float dmg, Vector3 dir)
+        public void Damage(int dmg, Vector3 dir)
         {
             OnDamage(dmg);
             transform.DOMove(transform.position - dir, .1f);
