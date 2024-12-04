@@ -40,6 +40,11 @@ namespace Boss
         public HealthBase healthBase;
         private Coroutine _coroutine;
 
+        void OnValidate()
+        {
+            healthBase = GetComponent<HealthBase>();    
+        }
+
         void Start()
         {
             Init();

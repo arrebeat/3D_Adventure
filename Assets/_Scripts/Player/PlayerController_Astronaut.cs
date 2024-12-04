@@ -8,11 +8,13 @@ using System;
 using Unity.Mathematics;
 using System.Linq;
 
-public class PlayerController_Astronaut : MonoBehaviour, IDamageable
+public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
 {
     public Rigidbody rb { get; private set; }
     public Animator animator { get; private set; }
     public SkinnedMeshRenderer[] meshRenderers { get; private set; }
+    public CheckpointManager checkpointManager { get; private set; }
+    private Collider _collider;
 
     public bool jumpPressed;
     public bool Grounded;
@@ -39,14 +41,20 @@ public class PlayerController_Astronaut : MonoBehaviour, IDamageable
     private Camera playerCamera;
 
     [Header("Damage")]
+    public HealthBase healthBase { get; private set; }
+    public bool isDead = false;
     public Color damageFlashColor;
     public float damageFlashDuration = .1f;
     [SerializeField]
     private List<FlashColor> _flashColors;
+    public float timeToRespawn = 1f;
 
     void OnValidate()
     {
+        _collider = GetComponent<Collider>();
         _flashColors = GetComponentsInChildren<FlashColor>().ToList();
+        healthBase = GetComponent<HealthBase>();
+        checkpointManager = GameObject.Find("CheckpointManager").GetComponent<CheckpointManager>();
     }
     
     private void Awake()
@@ -54,8 +62,13 @@ public class PlayerController_Astronaut : MonoBehaviour, IDamageable
         rb = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
         meshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
+        
+        //GameObject checkpointManagerObject = GameObject.Find("CheckpointManager");
 
         _playerControls = new PlayerControls();
+
+        healthBase.OnDamage += Damage;
+        healthBase.OnKill += Kill;
     }
 
     private void OnEnable()
@@ -123,7 +136,7 @@ public class PlayerController_Astronaut : MonoBehaviour, IDamageable
         rb.AddForce(_forceDirection, ForceMode.Impulse);   
         _forceDirection = Vector3.zero;
 
-        if (rb.velocity.y < 0f)
+        if (!isDead && rb.velocity.y < 0f)
             rb.velocity -= Vector3.down * Physics.gravity.y * _fallForce * Time.fixedDeltaTime;
 
         Vector3 horizontalVelocity = rb.velocity;
@@ -156,7 +169,7 @@ public class PlayerController_Astronaut : MonoBehaviour, IDamageable
             return false;
     }
     
-    public void Damage(int dmg)
+    public void Damage(HealthBase h)
     {
         _flashColors.ForEach(i => i.flashColor = damageFlashColor);
         _flashColors.ForEach(i => i.flashDuration = damageFlashDuration);
@@ -164,7 +177,41 @@ public class PlayerController_Astronaut : MonoBehaviour, IDamageable
     }
     public void Damage(int dmg, Vector3 dir)
     {
-        Damage(dmg);
+        //Damage(dmg);
+    }
+
+    public void Kill(HealthBase h)
+    {
+        _playerControls.Astronaut.Disable();
+        
+        rb.useGravity = false;
+        _collider.enabled = false;
+
+        if (!isDead) 
+        {
+            isDead = true;
+            animator.SetTrigger("death");
+        }
+
+        Invoke(nameof(Respawn), timeToRespawn);
+    }
+
+    [NaughtyAttributes.Button]
+    public void Respawn()
+    {
+        _playerControls.Astronaut.Enable();
+        healthBase.ResetHp();
+
+        isDead = false;
+        rb.useGravity = true;
+        _collider.enabled = true;
+
+        animator.SetTrigger("idle");
+
+        if (checkpointManager.HasCheckpoint())
+        {
+            transform.position = checkpointManager.GetLastCheckpointPosition();
+        }
     }
 
     #region INPUT CALLBACKS

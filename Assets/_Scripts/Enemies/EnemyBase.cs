@@ -26,7 +26,7 @@ namespace Enemy
         private Collider _collider;
         private FlashColor _flashColor;
         private ParticleSystem _particlesDamage;
-        private PlayerController_Astronaut _player;
+        public PlayerController_Astronaut _player { get; private set; }
         
         void Awake()
         {
@@ -57,7 +57,7 @@ namespace Enemy
 
         public virtual void Update()
         {
-            if (lookAtPlayer)
+            if (lookAtPlayer && !_player.isDead)
             {
                 model.transform.LookAt(_player.transform.position);
             }
@@ -88,7 +88,7 @@ namespace Enemy
 
             if (p != null)
             {
-                p.Damage(1);
+                p.healthBase.Damage(1);
             }
         }
 

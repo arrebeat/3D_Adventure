@@ -10,7 +10,7 @@ public class GunBase : MonoBehaviour
     public bool isPlayer = false;
     public ProjectileBase projectilePrefab;
     public Transform shootPoint;
-    public List<UIGunUpdater> uIGunUpdaters;
+    public List<UIUpdater> uiUpdaters;
 
     //[Space(10)]
     [Header("Gun Stats")]
@@ -71,6 +71,8 @@ public class GunBase : MonoBehaviour
 
     public void ShootStop()
     {
+        _currentShots = 0;
+        _reloading = false;
         if (_currentCoroutine != null)
         {
             StopCoroutine(_currentCoroutine);
@@ -99,7 +101,7 @@ public class GunBase : MonoBehaviour
         while (time < reloadTime)
         {
             time += Time.deltaTime;
-            uIGunUpdaters.ForEach(i => i.UpdateValue(time, reloadTime, false));
+            uiUpdaters.ForEach(i => i.UpdateValue(time, reloadTime, false));
             yield return new WaitForEndOfFrame();
         }
         _currentShots = 0;
@@ -108,11 +110,11 @@ public class GunBase : MonoBehaviour
 
     private void GetAllUis()
     {
-        uIGunUpdaters = GameObject.FindObjectsByType<UIGunUpdater>(FindObjectsSortMode.None).ToList();
+        uiUpdaters = GameObject.FindObjectsByType<UIUpdater>(FindObjectsSortMode.None).ToList();
     }
 
     private void UpdateUI()
     {
-        uIGunUpdaters.ForEach(i => i.UpdateValue(_currentShots, maxShots, true));
+        uiUpdaters.ForEach(i => i.UpdateValue(_currentShots, maxShots, true));
     }
 }

@@ -12,6 +12,8 @@ public class HealthBase : MonoBehaviour, IDamageable
     public Action<HealthBase> OnDamage;
     public Action<HealthBase> OnKill;
 
+    public UIUpdater uiUpdater;
+
     void Start()
     {
         Init();    
@@ -22,9 +24,17 @@ public class HealthBase : MonoBehaviour, IDamageable
         ResetHp();
     }
     
-    protected void ResetHp()
+    public void ResetHp()
     {
         _currentHp = maxHp;
+    }
+
+    private void UpdateHealthUI()
+    {
+        if (uiUpdater != null)
+        {
+            uiUpdater.UpdateValue((float)_currentHp/maxHp);
+        }
     }
     
     public void Damage(int dmg)
@@ -33,6 +43,7 @@ public class HealthBase : MonoBehaviour, IDamageable
 
         if (_currentHp <= 0) Kill();
 
+        UpdateHealthUI();
         OnDamage?.Invoke(this);
     }
 
