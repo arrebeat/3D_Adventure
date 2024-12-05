@@ -6,6 +6,7 @@ using UnityEngine;
 public class BossSpawnTrigger : MonoBehaviour
 {
     private BossBase _boss;
+    public GameObject bossCamera;
 
     void OnValidate()
     {
@@ -13,11 +14,30 @@ public class BossSpawnTrigger : MonoBehaviour
         _boss = bossObject.GetComponent<BossBase>();
     }
 
+    void Awake()
+    {
+        bossCamera.SetActive(false);
+    }
+
     void OnTriggerEnter(Collider other)
     {
-        if (_boss.stateMachine.CurrentState == null)
+        if (other.CompareTag("Player")) 
         {
-            if (other.CompareTag("Player")) _boss.SwitchState(BossStates.Init);
+            ActivateBossCamera();
+            if (_boss.stateMachine.CurrentState == null) _boss.SwitchState(BossStates.Init);
         }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player")) 
+            {
+                bossCamera.SetActive(false);
+            }       
+    }
+
+    public void ActivateBossCamera()
+    {
+        bossCamera.SetActive(true);
     }
 }

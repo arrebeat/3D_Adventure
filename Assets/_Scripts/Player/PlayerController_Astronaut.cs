@@ -14,6 +14,7 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
     public Animator animator { get; private set; }
     public SkinnedMeshRenderer[] meshRenderers { get; private set; }
     public CheckpointManager checkpointManager { get; private set; }
+    public EffectsManager effectsManager { get; private set; }
     private Collider _collider;
 
     public bool jumpPressed;
@@ -42,6 +43,7 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
 
     [Header("Damage")]
     public HealthBase healthBase { get; private set; }
+    public ScreenShake screenShake { get; private set; }
     public bool isDead = false;
     public Color damageFlashColor;
     public float damageFlashDuration = .1f;
@@ -54,7 +56,9 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
         _collider = GetComponent<Collider>();
         _flashColors = GetComponentsInChildren<FlashColor>().ToList();
         healthBase = GetComponent<HealthBase>();
+        screenShake = GetComponent<ScreenShake>();
         checkpointManager = GameObject.Find("CheckpointManager").GetComponent<CheckpointManager>();
+        effectsManager = GameObject.Find("EffectsManager").GetComponent<EffectsManager>();
     }
     
     private void Awake()
@@ -174,6 +178,10 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
         _flashColors.ForEach(i => i.flashColor = damageFlashColor);
         _flashColors.ForEach(i => i.flashDuration = damageFlashDuration);
         _flashColors.ForEach(i => i.Flash());
+        
+        effectsManager.VignetteEffect();
+
+        screenShake.CameraShake();
     }
     public void Damage(int dmg, Vector3 dir)
     {
