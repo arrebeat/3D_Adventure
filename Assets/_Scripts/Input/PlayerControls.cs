@@ -80,6 +80,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""3934f7dc-28e0-4a30-9f19-3a5ed9cf24a3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -206,11 +215,33 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""325e0540-c7e8-45ae-a200-eb8628a1dbf7"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Gun01"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""a83f1773-a74d-4d5d-97e6-d1ca40527498"",
                     ""path"": ""<Keyboard>/2"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
+                    ""action"": ""Gun02"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""acab1ab1-7a34-470d-8246-1236628bedb1"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Gun02"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -223,6 +254,39 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""Recover"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8266488f-d014-46e1-9cd2-19bbffed2a77"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Recover"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a85bd957-a549-4b00-a4c9-f28d96d19122"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4e2c66e8-7550-49c1-8229-5a551b0217db"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -262,6 +326,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Astronaut_Gun01 = m_Astronaut.FindAction("Gun01", throwIfNotFound: true);
         m_Astronaut_Gun02 = m_Astronaut.FindAction("Gun02", throwIfNotFound: true);
         m_Astronaut_Recover = m_Astronaut.FindAction("Recover", throwIfNotFound: true);
+        m_Astronaut_Interact = m_Astronaut.FindAction("Interact", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -329,6 +394,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Astronaut_Gun01;
     private readonly InputAction m_Astronaut_Gun02;
     private readonly InputAction m_Astronaut_Recover;
+    private readonly InputAction m_Astronaut_Interact;
     public struct AstronautActions
     {
         private @PlayerControls m_Wrapper;
@@ -339,6 +405,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Gun01 => m_Wrapper.m_Astronaut_Gun01;
         public InputAction @Gun02 => m_Wrapper.m_Astronaut_Gun02;
         public InputAction @Recover => m_Wrapper.m_Astronaut_Recover;
+        public InputAction @Interact => m_Wrapper.m_Astronaut_Interact;
         public InputActionMap Get() { return m_Wrapper.m_Astronaut; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -366,6 +433,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Recover.started += instance.OnRecover;
             @Recover.performed += instance.OnRecover;
             @Recover.canceled += instance.OnRecover;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
         }
 
         private void UnregisterCallbacks(IAstronautActions instance)
@@ -388,6 +458,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Recover.started -= instance.OnRecover;
             @Recover.performed -= instance.OnRecover;
             @Recover.canceled -= instance.OnRecover;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
         }
 
         public void RemoveCallbacks(IAstronautActions instance)
@@ -431,5 +504,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnGun01(InputAction.CallbackContext context);
         void OnGun02(InputAction.CallbackContext context);
         void OnRecover(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
     }
 }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3000900098510261429}
   - component: {fileID: 3817355898156322040}
   - component: {fileID: 3400396635047088152}
+  - component: {fileID: 2070250599399303195}
   m_Layer: 0
   m_Name: pfb_HealthPack
   m_TagString: Untagged
@@ -71,6 +72,19 @@ MonoBehaviour:
   tagPlayer: Player
   tagBat: Bat
   timeToDestroy: 1
+--- !u!114 &2070250599399303195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 665300947448706402}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baee8ace98d020746a15c00885524b63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinSpeed: 5
 --- !u!1 &5344051035514934908
 GameObject:
   m_ObjectHideFlags: 0

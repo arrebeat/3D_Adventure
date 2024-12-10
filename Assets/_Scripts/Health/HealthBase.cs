@@ -8,6 +8,7 @@ public class HealthBase : MonoBehaviour, IDamageable
     public bool destroyOnKill = false;
     public float timeToDestroy = 1f;
     [SerializeField] private int _currentHp;
+    public int CurrentHp() { return _currentHp; }
 
     public Action<HealthBase> OnDamage;
     public Action<HealthBase> OnKill;
@@ -42,7 +43,11 @@ public class HealthBase : MonoBehaviour, IDamageable
     {
         _currentHp -= dmg;
 
-        if (_currentHp <= 0) Kill();
+        if (_currentHp <= 0) 
+        {
+            _currentHp = 0;
+            Kill();
+        }
 
         UpdateHealthUI();
         OnDamage?.Invoke(this);

@@ -23,7 +23,7 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
     public bool isMoving;
 
     
-    private PlayerControls _playerControls;
+    public PlayerControls _playerControls;
     private InputAction _move;
     
     private Vector2 _moveInput;
@@ -51,6 +51,11 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
     [SerializeField]
     private List<FlashColor> _flashColors;
     public float timeToRespawn = 1f;
+
+    [Header("Interactibles")]
+    public bool canInteract = false;
+    public ChestBase interactableChest;
+
 
     void OnValidate()
     {
@@ -90,9 +95,13 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
         _playerControls.Astronaut.Jump.canceled += Jump_canceled;
 
         _playerControls.Astronaut.Recover.started += Recover;
+
+        _playerControls.Astronaut.Interact.started += Interact;
         
         _playerControls.Astronaut.Enable();
     }
+
+    
 
     private void OnDisable()
     {
@@ -176,6 +185,32 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
         else
             return false;
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+        var c = other.gameObject.GetComponent<ChestBase>();
+        if (c != null) 
+        {
+            canInteract = true;
+            //interactableChest = c;  
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        var c = other.gameObject.GetComponent<ChestBase>();
+        if (c != null) canInteract = false;
+        //interactableChest = null;  
+
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+    }
+    
+    void OnCollisionExit(Collision other)
+    {
+    }
     
     public void Damage(HealthBase h)
     {
@@ -208,10 +243,6 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
         Invoke(nameof(Respawn), timeToRespawn);
     }
 
-    private void Recover(InputAction.CallbackContext context)
-    {
-        _healthPack.ConsumeHealthPack();
-    }
 
     [NaughtyAttributes.Button]
     public void Respawn()
@@ -270,6 +301,19 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
     private void Jump_canceled(InputAction.CallbackContext context)
     {
         jumpPressed = false;
+    }
+
+    private void Recover(InputAction.CallbackContext context)
+    {
+        _healthPack.ConsumeHealthPack();
+    }
+
+    private void Interact(InputAction.CallbackContext context)
+    {
+        if (interactableChest != null)
+        {
+            interactableChest.OpenChest();
+        }
     }
 
     #endregion

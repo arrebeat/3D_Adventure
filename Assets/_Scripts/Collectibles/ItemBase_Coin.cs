@@ -9,14 +9,6 @@ public class ItemBase_Coin : ItemBase
     //public int meshRenderer;
     //public ParticleSystem particleSystem_Aura;
 
-    void Awake()
-    {
-        //meshRenderer = GetComponent<MeshRenderer>();
-        //feedbacks = GetComponentInChildren<MMF_Player>();
-        //particleSystem_Aura = GetComponentInChildren<ParticleSystem>();
-        //player = GetComponent<PlayerController_Astronaut>();
-    }
-
     void Start()
     {
         //meshRenderer.enabled = false;

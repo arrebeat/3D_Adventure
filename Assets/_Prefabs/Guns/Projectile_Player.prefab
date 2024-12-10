@@ -137,6 +137,7 @@ MonoBehaviour:
   timeToDestroy: 0.5
   hitTags:
   - Enemy
+  - Destructible
 --- !u!54 &8541680938603600837
 Rigidbody:
   m_ObjectHideFlags: 0

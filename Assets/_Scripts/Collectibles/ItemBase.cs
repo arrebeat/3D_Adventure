@@ -23,15 +23,14 @@ namespace Items
         
         void OnValidate()
         {
-            meshRenderer = GetComponentInChildren<MeshRenderer>();
-            player = GameObject.Find("Player").GetComponent<PlayerController_Astronaut>();
-            itemManager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
-            coll = GetComponent<Collider>();  
         }
 
         void Awake()
         {
-            //feedbacks = GetComponentInChildren<MMF_Player>();
+            meshRenderer = GetComponentInChildren<MeshRenderer>();
+            player = GameObject.Find("Player").GetComponent<PlayerController_Astronaut>();
+            itemManager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
+            coll = GetComponent<Collider>();  
         }
 
         private void OnTriggerEnter(Collider other)
