@@ -16,6 +16,7 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
     public CheckpointManager checkpointManager { get; private set; }
     public EffectsManager effectsManager { get; private set; }
     private Collider _collider;
+    private ActionHealthPack _healthPack;
 
     public bool jumpPressed;
     public bool Grounded;
@@ -56,6 +57,7 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
         _collider = GetComponent<Collider>();
         _flashColors = GetComponentsInChildren<FlashColor>().ToList();
         healthBase = GetComponent<HealthBase>();
+        _healthPack = GetComponent<ActionHealthPack>();
         screenShake = GetComponent<ScreenShake>();
         checkpointManager = GameObject.Find("CheckpointManager").GetComponent<CheckpointManager>();
         effectsManager = GameObject.Find("EffectsManager").GetComponent<EffectsManager>();
@@ -86,6 +88,8 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
         _playerControls.Astronaut.Jump.started += Jump_started;
         _playerControls.Astronaut.Jump.performed += Jump_performed;
         _playerControls.Astronaut.Jump.canceled += Jump_canceled;
+
+        _playerControls.Astronaut.Recover.started += Recover;
         
         _playerControls.Astronaut.Enable();
     }
@@ -202,6 +206,11 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
         }
 
         Invoke(nameof(Respawn), timeToRespawn);
+    }
+
+    private void Recover(InputAction.CallbackContext context)
+    {
+        _healthPack.ConsumeHealthPack();
     }
 
     [NaughtyAttributes.Button]

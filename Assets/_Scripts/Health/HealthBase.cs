@@ -27,6 +27,7 @@ public class HealthBase : MonoBehaviour, IDamageable
     public void ResetHp()
     {
         _currentHp = maxHp;
+        UpdateHealthUI();
     }
 
     private void UpdateHealthUI()

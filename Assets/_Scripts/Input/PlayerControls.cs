@@ -71,6 +71,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Recover"",
+                    ""type"": ""Button"",
+                    ""id"": ""9bf71450-bd54-442c-9e56-f895c18bc97e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -205,6 +214,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Gun02"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""847a9f5b-a03f-46d4-8b00-b0e15b5396ff"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Recover"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -241,6 +261,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Astronaut_Shoot = m_Astronaut.FindAction("Shoot", throwIfNotFound: true);
         m_Astronaut_Gun01 = m_Astronaut.FindAction("Gun01", throwIfNotFound: true);
         m_Astronaut_Gun02 = m_Astronaut.FindAction("Gun02", throwIfNotFound: true);
+        m_Astronaut_Recover = m_Astronaut.FindAction("Recover", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -307,6 +328,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Astronaut_Shoot;
     private readonly InputAction m_Astronaut_Gun01;
     private readonly InputAction m_Astronaut_Gun02;
+    private readonly InputAction m_Astronaut_Recover;
     public struct AstronautActions
     {
         private @PlayerControls m_Wrapper;
@@ -316,6 +338,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Shoot => m_Wrapper.m_Astronaut_Shoot;
         public InputAction @Gun01 => m_Wrapper.m_Astronaut_Gun01;
         public InputAction @Gun02 => m_Wrapper.m_Astronaut_Gun02;
+        public InputAction @Recover => m_Wrapper.m_Astronaut_Recover;
         public InputActionMap Get() { return m_Wrapper.m_Astronaut; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -340,6 +363,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Gun02.started += instance.OnGun02;
             @Gun02.performed += instance.OnGun02;
             @Gun02.canceled += instance.OnGun02;
+            @Recover.started += instance.OnRecover;
+            @Recover.performed += instance.OnRecover;
+            @Recover.canceled += instance.OnRecover;
         }
 
         private void UnregisterCallbacks(IAstronautActions instance)
@@ -359,6 +385,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Gun02.started -= instance.OnGun02;
             @Gun02.performed -= instance.OnGun02;
             @Gun02.canceled -= instance.OnGun02;
+            @Recover.started -= instance.OnRecover;
+            @Recover.performed -= instance.OnRecover;
+            @Recover.canceled -= instance.OnRecover;
         }
 
         public void RemoveCallbacks(IAstronautActions instance)
@@ -401,5 +430,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnShoot(InputAction.CallbackContext context);
         void OnGun01(InputAction.CallbackContext context);
         void OnGun02(InputAction.CallbackContext context);
+        void OnRecover(InputAction.CallbackContext context);
     }
 }

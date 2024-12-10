@@ -49,6 +49,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Recover",
+                    "type": "Button",
+                    "id": "9bf71450-bd54-442c-9e56-f895c18bc97e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -181,6 +190,17 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "Gun02",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "847a9f5b-a03f-46d4-8b00-b0e15b5396ff",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Recover",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
