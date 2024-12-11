@@ -7,6 +7,7 @@ using UnityEngine.Events;
 using System;
 using Unity.Mathematics;
 using System.Linq;
+using Skins;
 
 public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
 {
@@ -15,6 +16,9 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
     public SkinnedMeshRenderer[] meshRenderers { get; private set; }
     public CheckpointManager checkpointManager { get; private set; }
     public EffectsManager effectsManager { get; private set; }
+    public SkinManager skinManager { get; private set; }
+    public SkinSwitcher skinSwitcher { get; private set; }
+    public GunBase currentGun;
     private Collider _collider;
     private ActionHealthPack _healthPack;
 
@@ -57,6 +61,8 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
     public ChestBase interactableChest;
 
 
+    private Coroutine _coroutine;
+
     void OnValidate()
     {
         _collider = GetComponent<Collider>();
@@ -66,6 +72,8 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
         screenShake = GetComponent<ScreenShake>();
         checkpointManager = GameObject.Find("CheckpointManager").GetComponent<CheckpointManager>();
         effectsManager = GameObject.Find("EffectsManager").GetComponent<EffectsManager>();
+        skinManager = GameObject.Find("SkinManager").GetComponent<SkinManager>();
+        skinSwitcher = GetComponent<SkinSwitcher>();
     }
     
     private void Awake()
@@ -261,6 +269,44 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
             transform.position = checkpointManager.GetLastCheckpointPosition();
         }
     }
+
+    #region POWER UPS
+    public void ChangeSpeed(float targetSpeed, float duration)
+    {
+        if (_coroutine != null) StopCoroutine(_coroutine);
+        _coroutine = StartCoroutine(ChangeSpeedCoroutine(targetSpeed, duration));
+    }
+    public IEnumerator ChangeSpeedCoroutine(float targetSpeed, float duration)
+    {
+        var initialMaxSpeed = _runMaxSpeed;
+        _runMaxSpeed = targetSpeed;
+
+        yield return new WaitForSeconds(duration);
+
+        _runMaxSpeed = initialMaxSpeed;
+        skinSwitcher.SwitchSkin(skinManager.GetSetupByType(SkinType.REGULAR)); 
+        yield return null;
+    }
+
+    public void ChangeDamage(int targetDamage, float duration)
+    {
+        if (_coroutine != null) StopCoroutine(_coroutine);
+        _coroutine = StartCoroutine(ChangeDamageCoroutine(targetDamage, duration));
+    }   
+    public IEnumerator ChangeDamageCoroutine(int targetDamage, float duration)
+    {
+        //var gun = GetComponentInChildren<GunBase>();
+        var initialDamage = currentGun.damagePerShot;
+        currentGun.damagePerShot = targetDamage;
+
+        yield return new WaitForSeconds(duration);
+
+        currentGun.damagePerShot = initialDamage;
+        skinSwitcher.SwitchSkin(skinManager.GetSetupByType(SkinType.REGULAR));
+        
+        yield return null;
+    }
+    #endregion
 
     #region INPUT CALLBACKS
     private void Move_started(InputAction.CallbackContext context)

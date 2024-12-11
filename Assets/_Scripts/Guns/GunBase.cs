@@ -18,6 +18,7 @@ public class GunBase : MonoBehaviour
     public float timeBetweenShots = .3f;
     public float reloadTime = 2f;
     public float bulletSpeed = 50f;
+    public int damagePerShot = 1;
 
 
     private Coroutine _currentCoroutine;
@@ -38,6 +39,7 @@ public class GunBase : MonoBehaviour
         var projectile = Instantiate(projectilePrefab);
         projectile.transform.position = shootPoint.position;
         projectile.transform.rotation = shootPoint.rotation;
+        projectile.GetComponent<ProjectileBase>().damage = damagePerShot;
     }
 
     IEnumerator AutoShoot()

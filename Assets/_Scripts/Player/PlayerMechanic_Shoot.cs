@@ -31,6 +31,7 @@ public class PlayerMechanic_Shoot : PlayerMechanicBase
     {
         _currentGun = Instantiate(gunPrefabs[gunIndex], gunPosition);
         _currentGun.transform.localPosition = _currentGun.transform.localEulerAngles = Vector3.zero;
+        player.currentGun = _currentGun.GetComponent<GunBase>();
     }
 
     #region INPUT CALLBACKS
