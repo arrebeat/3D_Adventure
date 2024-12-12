@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Destructible
+  - Floor
   layers:
   - Default
   - TransparentFX

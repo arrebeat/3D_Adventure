@@ -50,7 +50,7 @@ public class FSMPlayer : MonoBehaviour
 
     private void JumpCheck()
     {
-        if (player.jumpPressed && player.Grounded)
+        if (player.jumpPressed && player.grounded)
             stateMachine.SwitchState(PlayerStates.Jump);
     }
 }

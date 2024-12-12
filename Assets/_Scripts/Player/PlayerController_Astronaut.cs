@@ -23,7 +23,8 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
     private ActionHealthPack _healthPack;
 
     public bool jumpPressed;
-    public bool Grounded;
+    public bool falling;
+    public bool grounded;
     public bool isMoving;
 
     
@@ -131,7 +132,20 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
 
     void Update()
     {
-        Grounded = isGrounded();
+        grounded = isGrounded();
+        falling = isFalling();
+
+        //if (isGrounded() && isMoving) animator.SetTrigger("run");
+
+        FallCheck();
+    }
+
+    public void FallCheck()
+    {
+        if (isFalling())
+        {
+            animator.SetTrigger("fall");
+        }
     }
 
     void FixedUpdate()
@@ -194,6 +208,14 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
             return false;
     }
 
+    private bool isFalling()
+    {
+        if (rb.velocity.y < -0.25)
+            return true;
+        else
+            return false;
+    }
+
     void OnTriggerEnter(Collider other)
     {
         var c = other.gameObject.GetComponent<ChestBase>();
@@ -214,6 +236,10 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
 
     void OnCollisionEnter(Collision other)
     {
+        if (other.transform.CompareTag("Floor"))
+        {
+            animator.SetTrigger("land");
+        }
     }
     
     void OnCollisionExit(Collision other)
@@ -335,6 +361,7 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
         if (isGrounded())
         {
             _forceDirection += Vector3.up * _jumpForce;
+            animator.SetTrigger("jump");
         }
     }
 
