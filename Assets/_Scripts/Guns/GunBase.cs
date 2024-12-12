@@ -31,7 +31,12 @@ public class GunBase : MonoBehaviour
    
     void Awake()
     {
-        if (isPlayer) GetAllUis();
+        if (isPlayer)
+        {
+            GetAllUis();
+        } 
+            
+        //player = GameObject.Find("Find").GetComponent<PlayerController_Astronaut>();
     }
 
     public virtual void Shoot()

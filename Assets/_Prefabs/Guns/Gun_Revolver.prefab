@@ -44,14 +44,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f74a9a9bbd885a343a45085fea1b6298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   isPlayer: 1
   projectilePrefab: {fileID: 8575416159569373389, guid: 87e88892b1da0d84f971596a36f74160,
     type: 3}
   shootPoint: {fileID: 2315572194979164285}
-  uIGunUpdaters: []
+  uiUpdaters: []
   maxShots: 6
   timeBetweenShots: 0.3
   reloadTime: 1
   bulletSpeed: 75
+  damagePerShot: 1
   _currentShots: 0
   _reloading: 0

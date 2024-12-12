@@ -38,6 +38,7 @@ public class PlayerMechanic_Shoot : PlayerMechanicBase
     private void Shoot_started(InputAction.CallbackContext context)
     {
         _currentGun.ShootStart();
+        player.flashColors[8].Flash();
     }
     private void Shoot_performed(InputAction.CallbackContext context)
     {

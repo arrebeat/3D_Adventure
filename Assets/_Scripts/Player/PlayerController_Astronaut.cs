@@ -53,13 +53,15 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
     public bool isDead = false;
     public Color damageFlashColor;
     public float damageFlashDuration = .1f;
-    [SerializeField]
-    private List<FlashColor> _flashColors;
+    public List<FlashColor> flashColors;
     public float timeToRespawn = 1f;
 
     [Header("Interactibles")]
     public bool canInteract = false;
     public ChestBase interactableChest;
+
+    [Header("VFX")]
+    public List<ParticleSystem> particleSystems;
 
 
     private Coroutine _coroutine;
@@ -67,7 +69,7 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
     void OnValidate()
     {
         _collider = GetComponent<Collider>();
-        _flashColors = GetComponentsInChildren<FlashColor>().ToList();
+        flashColors = GetComponentsInChildren<FlashColor>().ToList();
         healthBase = GetComponent<HealthBase>();
         _healthPack = GetComponent<ActionHealthPack>();
         screenShake = GetComponent<ScreenShake>();
@@ -135,7 +137,8 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
         grounded = isGrounded();
         falling = isFalling();
 
-        //if (isGrounded() && isMoving) animator.SetTrigger("run");
+        if (!grounded) particleSystems[0].Pause();
+        if (falling && grounded) particleSystems[0].Play();
 
         FallCheck();
     }
@@ -248,9 +251,9 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
     
     public void Damage(HealthBase h)
     {
-        _flashColors.ForEach(i => i.flashColor = damageFlashColor);
-        _flashColors.ForEach(i => i.flashDuration = damageFlashDuration);
-        _flashColors.ForEach(i => i.Flash());
+        flashColors.ForEach(i => i.flashColor = damageFlashColor);
+        flashColors.ForEach(i => i.flashDuration = damageFlashDuration);
+        flashColors.ForEach(i => i.Flash());
         
         effectsManager.VignetteEffect();
 
