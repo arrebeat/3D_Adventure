@@ -37,7 +37,7 @@ public class ChestBase : MonoBehaviour
 
     void Start()
     {
-        icon.enabled = false;    
+        if (icon.enabled) icon.enabled = false;    
         icon.transform.DOMoveY(transform.position.y + iconHoverHeight, iconHoverFrequency).SetEase(iconHoverEase).SetLoops(-1, LoopType.Yoyo).From();
     }
 

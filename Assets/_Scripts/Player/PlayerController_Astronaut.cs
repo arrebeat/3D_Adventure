@@ -130,6 +130,11 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
     void Start()
     {
         animator.SetTrigger("idle");
+
+        if (SaveManager.instance.saveSetup.lastCheckpoint != 0)
+        {
+            transform.position = checkpointManager.GetLastCheckpointPosition(true);
+        }
     }
 
     void Update()

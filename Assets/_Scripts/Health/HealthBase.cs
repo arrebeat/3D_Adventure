@@ -23,6 +23,11 @@ public class HealthBase : MonoBehaviour, IDamageable
     protected virtual void Init()
     {
         ResetHp();
+
+        if (SaveManager.instance.saveSetup.currentHp != maxHp)
+        {
+            _currentHp = SaveManager.instance.saveSetup.currentHp;
+        }
     }
     
     public void ResetHp()

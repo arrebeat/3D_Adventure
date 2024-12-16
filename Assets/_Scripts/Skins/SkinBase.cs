@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 namespace Skins
 {
@@ -11,10 +12,18 @@ namespace Skins
         public SkinType skinType;
         public string compareTag = "Player";
 
+        public Vector3 rotationVector = new Vector3(1, .5f, 0);
+        public float rotationDuration = .01f;
+
         void Awake()
         {
             player = GameObject.Find("Player").GetComponent<PlayerController_Astronaut>();
             skinManager = GameObject.Find("SkinManager").GetComponent<SkinManager>();
+        }
+
+        void Start()
+        {
+            gameObject.transform.DORotate(rotationVector, rotationDuration).SetLoops(-1, LoopType.Incremental);
         }
         
         private void OnTriggerEnter(Collider other)

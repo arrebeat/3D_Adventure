@@ -154,5 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skinType: 1
   compareTag: Player
+  rotationVector: {x: 1, y: 0.5, z: 0}
+  rotationDuration: 0.01
   targetSpeed: 30
   duration: 5

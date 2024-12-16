@@ -23,11 +23,9 @@ namespace Items
         public static ItemManager instance;
 
         [SerializeField] private int _coinAmount;
+        public int CoinAmount() { return _coinAmount; }
         [SerializeField] private int _healthPackAmount;
-        public int HealthPackAmount()
-        {
-            return _healthPackAmount;
-        }
+        public int HealthPackAmount() { return _healthPackAmount; }
         
 
         void Awake()
@@ -43,6 +41,13 @@ namespace Items
         void Start()
         {
             if (reset) Reset();
+            LoadItemsFromSave();
+        }
+
+        private void LoadItemsFromSave()
+        {
+            AddItemByType(ItemType.COIN, SaveManager.instance.saveSetup.coinAmount);
+            AddItemByType(ItemType.HEALTHPACK, SaveManager.instance.saveSetup.healthPackAmount);
         }
 
         void Update()

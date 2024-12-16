@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using DG.Tweening;
 using Animation;
 
@@ -21,6 +22,9 @@ namespace Enemy
         public float timeToDestroy = 1.5f;
 
         public bool lookAtPlayer = false;
+
+        [Header("Events")]
+        public UnityEvent OnKill;
 
         private AnimationBase _animationBase;
         private Collider _collider;
@@ -94,13 +98,10 @@ namespace Enemy
 
         protected virtual void Kill()
         {
-            OnKill();
-        }
-
-        protected virtual void OnKill() 
-        {
             PlayAnimationByTrigger(AnimationType.Death);
             if (_collider != null) _collider.enabled = false;
+            OnKill?.Invoke();
+
             Destroy(gameObject, timeToDestroy);
         }
 
