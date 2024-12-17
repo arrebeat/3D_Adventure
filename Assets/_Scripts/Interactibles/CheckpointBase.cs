@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -42,22 +43,25 @@ public class CheckpointBase : MonoBehaviour
         }
 
         activeParticles.Play();
+
+        checkpointManager.DeactivateOtherCheckpoints(key);
     }
 
     [NaughtyAttributes.Button]
-    private void Deactivate()
+    public void Deactivate()
     {
+        isActive = false;
+
         foreach (var meshRenderer in meshRenderers)
         {
             meshRenderer.material.DisableKeyword("_EMISSION");
         }
+
+        activeParticles.Stop();
     }
 
     private void SaveCheckpoint()
     {
-        /*if (PlayerPrefs.GetInt(checkpointKey, 0) > key)
-        PlayerPrefs.SetInt(checkpointKey, key);*/
-
         checkpointManager.SaveCheckpoint(key);
     }
 }

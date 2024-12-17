@@ -12,6 +12,11 @@ public class PlayLevel : MonoBehaviour
         SaveManager.instance.FileLoaded += OnLoad;
     }
 
+    void Update()
+    {
+        OnLoad(SaveManager.instance.saveSetup);
+    }
+    
     public void OnLoad(SaveSetup setup)
     {
         uiTextName.text = "Play " + (setup.lastLevel + 1);

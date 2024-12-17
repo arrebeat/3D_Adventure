@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HealthBase : MonoBehaviour, IDamageable
 {
+    public bool isPlayer = false;
     public int maxHp = 10;
     public bool destroyOnKill = false;
     public float timeToDestroy = 1f;
@@ -23,16 +24,16 @@ public class HealthBase : MonoBehaviour, IDamageable
     protected virtual void Init()
     {
         ResetHp();
-
-        if (SaveManager.instance.saveSetup.currentHp != maxHp)
-        {
-            _currentHp = SaveManager.instance.saveSetup.currentHp;
-        }
     }
     
     public void ResetHp()
     {
         _currentHp = maxHp;
+        UpdateHealthUI();
+    }
+    public virtual void SetHp(int hp)
+    {
+        _currentHp = hp;
         UpdateHealthUI();
     }
 

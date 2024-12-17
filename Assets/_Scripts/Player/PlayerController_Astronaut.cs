@@ -135,6 +135,11 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
         {
             transform.position = checkpointManager.GetLastCheckpointPosition(true);
         }
+
+        if (SaveManager.instance.saveSetup.currentHp != healthBase.maxHp)
+        {
+            healthBase.SetHp(SaveManager.instance.saveSetup.currentHp);
+        }
     }
 
     void Update()

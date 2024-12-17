@@ -20,12 +20,9 @@ public class CheckpointManager : MonoBehaviour
 
     public void SaveCheckpoint(int i)
     {
-        if (i > lastCheckpointKey)
-        {
-            lastCheckpointKey = i;
-            SaveManager.instance.SaveLastCheckpoint(i);
-            SaveManager.instance.SaveCurrentHp(player.healthBase.CurrentHp());
-        }
+        lastCheckpointKey = i;
+        SaveManager.instance.SaveLastCheckpoint(i);
+        SaveManager.instance.SaveCurrentHp(player.healthBase.CurrentHp());
     }
 
     public Vector3 GetLastCheckpointPosition()
@@ -38,5 +35,13 @@ public class CheckpointManager : MonoBehaviour
     {
         var checkpoint = checkpoints.Find(i => i.key == SaveManager.instance.saveSetup.lastCheckpoint);
         return checkpoint.transform.position;
+    }
+
+    public void DeactivateOtherCheckpoints(int key)
+    {
+        foreach (var checkpoint in checkpoints)
+        {
+            if (checkpoint.key != key) checkpoint.Deactivate();
+        }
     }
 }

@@ -8,6 +8,7 @@ using Items;
 
 public class SaveManager : Singleton<SaveManager>
 {
+    public PlayerController_Astronaut player;
     public ItemManager itemManager { get; private set; }
     public int lastLevel;
     public Action<SaveSetup> FileLoaded;
@@ -26,7 +27,6 @@ public class SaveManager : Singleton<SaveManager>
 
         transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
-
     }
     
     private void CreateNewSave()
@@ -34,6 +34,7 @@ public class SaveManager : Singleton<SaveManager>
         _saveSetup = new SaveSetup();
         _saveSetup.lastLevel = 0;
         _saveSetup.playerName = "arre";
+        _saveSetup.currentHp = player.healthBase.maxHp;
     }
 
     void Start()
@@ -43,9 +44,14 @@ public class SaveManager : Singleton<SaveManager>
 
     void Update()
     {
+        GetPlayer();
         GetItemManager();    
     }
 
+    private void GetPlayer()
+    {
+        if (player == null) player = GameObject.Find("Player").GetComponent<PlayerController_Astronaut>();
+    }
     private void GetItemManager()
     {
         if (itemManager == null) itemManager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
@@ -102,7 +108,7 @@ public class SaveManager : Singleton<SaveManager>
     }
 
     [NaughtyAttributes.Button]
-    private void Load()
+    public void Load()
     {
         string fileLoaded = "";
 
@@ -120,6 +126,15 @@ public class SaveManager : Singleton<SaveManager>
 
 
         FileLoaded.Invoke(_saveSetup);
+    }
+
+    [NaughtyAttributes.Button]
+    private void Clear()
+    {
+        if (File.Exists(_path))
+        {
+            File.Delete(_path);
+        }
     }
 }
 
