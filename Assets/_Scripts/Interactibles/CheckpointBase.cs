@@ -13,7 +13,7 @@ public class CheckpointBase : MonoBehaviour
 
     private string checkpointKey = "CheckpointKey";
 
-    void OnValidate()
+    void Start()
     {
         checkpointManager = GameObject.Find("CheckpointManager").GetComponent<CheckpointManager>();
     }
@@ -43,6 +43,7 @@ public class CheckpointBase : MonoBehaviour
         }
 
         activeParticles.Play();
+        SfxPool.instance.Play(SfxType.CHECKPOINT);
 
         checkpointManager.DeactivateOtherCheckpoints(key);
     }

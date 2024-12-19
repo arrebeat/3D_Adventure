@@ -10,12 +10,12 @@ public class BossSpawnTrigger : MonoBehaviour
 
     void OnValidate()
     {
-        GameObject bossObject = GameObject.Find("Boss");
-        _boss = bossObject.GetComponent<BossBase>();
     }
 
     void Awake()
     {
+        GameObject bossObject = GameObject.Find("Boss");
+        _boss = bossObject.GetComponent<BossBase>();
         bossCamera.SetActive(false);
     }
 

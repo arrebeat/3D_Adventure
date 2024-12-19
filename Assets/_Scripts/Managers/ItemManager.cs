@@ -42,6 +42,7 @@ namespace Items
         {
             if (reset) Reset();
             LoadItemsFromSave();
+            
         }
 
         private void LoadItemsFromSave()

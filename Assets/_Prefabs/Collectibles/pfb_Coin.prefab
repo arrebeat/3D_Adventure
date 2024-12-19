@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemType: 0
+  sfxType: 1
   tagPlayer: Player
   tagBat: Bat
   timeToDestroy: 1

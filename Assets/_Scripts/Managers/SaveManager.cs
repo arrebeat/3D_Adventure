@@ -34,7 +34,7 @@ public class SaveManager : Singleton<SaveManager>
         _saveSetup = new SaveSetup();
         _saveSetup.lastLevel = 0;
         _saveSetup.playerName = "arre";
-        _saveSetup.currentHp = player.healthBase.maxHp;
+        _saveSetup.currentHp = 5;
     }
 
     void Start()

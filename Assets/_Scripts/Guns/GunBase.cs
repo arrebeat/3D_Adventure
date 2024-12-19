@@ -45,6 +45,7 @@ public class GunBase : MonoBehaviour
         projectile.transform.position = shootPoint.position;
         projectile.transform.rotation = shootPoint.rotation;
         projectile.GetComponent<ProjectileBase>().damage = damagePerShot;
+        SfxPool.instance.Play(SfxType.SHOOT);
     }
 
     IEnumerator AutoShoot()

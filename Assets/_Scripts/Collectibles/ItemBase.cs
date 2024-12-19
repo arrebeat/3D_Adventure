@@ -15,6 +15,7 @@ namespace Items
         public Collider coll { get; private set; }
 
         public ItemType itemType;
+        public SfxType sfxType;
 
         public string tagPlayer = "Player";
         public string tagBat = "Bat";
@@ -48,6 +49,7 @@ namespace Items
 
         protected virtual void Collected()
         {
+            PlaySfx();
             itemManager.AddItemByType(itemType);
 
             meshRenderer.enabled = false;  
@@ -59,6 +61,11 @@ namespace Items
         {
             meshRenderer.enabled = false;
             Destroy(gameObject, timeToDestroy);
+        }
+
+        private void PlaySfx()
+        {
+            SfxPool.instance.Play(sfxType);
         }
     }
     

@@ -16,11 +16,11 @@ namespace Items
 
         void OnValidate()
         {
-            itemManager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
         }
 
         void Start()
         {
+            itemManager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
             CreateUIItems();
         }
 
@@ -29,7 +29,7 @@ namespace Items
             CheckHealthPakcs();
         }
 
-        private void CreateUIItems()
+        public void CreateUIItems()
         {
             foreach (var setup in itemManager.itemSetups)
             {

@@ -1,8 +1,0 @@
-{
-    "lastLevel": 0,
-    "lastCheckpoint": 0,
-    "playerName": "arre",
-    "currentHp": 5,
-    "coinAmount": 0,
-    "healthPackAmount": 0
-}

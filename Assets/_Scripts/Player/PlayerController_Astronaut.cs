@@ -68,33 +68,39 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
 
     void OnValidate()
     {
+
+    }
+    
+    private void Awake()
+    {
+        Init();
+        //GameObject checkpointManagerObject = GameObject.Find("CheckpointManager");
+
+        _playerControls = new PlayerControls();
+
+    }
+
+    private void Init()
+    {
         _collider = GetComponent<Collider>();
         flashColors = GetComponentsInChildren<FlashColor>().ToList();
-        healthBase = GetComponent<HealthBase>();
         _healthPack = GetComponent<ActionHealthPack>();
         screenShake = GetComponent<ScreenShake>();
         checkpointManager = GameObject.Find("CheckpointManager").GetComponent<CheckpointManager>();
         effectsManager = GameObject.Find("EffectsManager").GetComponent<EffectsManager>();
         skinManager = GameObject.Find("SkinManager").GetComponent<SkinManager>();
         skinSwitcher = GetComponent<SkinSwitcher>();
-    }
-    
-    private void Awake()
-    {
+        healthBase = GetComponent<HealthBase>();
         rb = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
         meshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
-        
-        //GameObject checkpointManagerObject = GameObject.Find("CheckpointManager");
-
-        _playerControls = new PlayerControls();
-
-        healthBase.OnDamage += Damage;
-        healthBase.OnKill += Kill;
     }
 
     private void OnEnable()
     {
+        healthBase.OnDamage += Damage;
+        healthBase.OnKill += Kill;
+        
         _move = _playerControls.Astronaut.Move;
 
         _playerControls.Astronaut.Move.started += Move_started;
@@ -373,6 +379,7 @@ public class PlayerController_Astronaut : MonoBehaviour//, IDamageable
 
         if (isGrounded())
         {
+            SfxPool.instance.Play(SfxType.JUMP);
             _forceDirection += Vector3.up * _jumpForce;
             animator.SetTrigger("jump");
         }

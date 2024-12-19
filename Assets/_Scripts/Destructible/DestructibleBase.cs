@@ -24,11 +24,11 @@ public class DestructibleBase : MonoBehaviour
 
     void OnValidate()
     {
-        healthBase = GetComponent<HealthBase>();
     }
 
-    void Awake()
+    void Start()
     {
+        healthBase = GetComponent<HealthBase>();
         healthBase.OnDamage += Damage;
     }
 

@@ -11,12 +11,12 @@ public class ActionHealthPack : MonoBehaviour
 
     void OnValidate()
     {
-        itemManager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
-        player = GameObject.Find("Player").GetComponent<PlayerController_Astronaut>();
     }
 
     void Start()
     {
+        player = GameObject.Find("Player").GetComponent<PlayerController_Astronaut>();
+        itemManager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
         soInt = itemManager.GetItemByType(ItemType.HEALTHPACK).soInt;
     }
 

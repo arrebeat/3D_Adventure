@@ -28,22 +28,22 @@ public class ChestBase : MonoBehaviour
 
     void OnValidate()
     {
+    }
+
+    void Start()
+    {
+        Init();
+        if (icon.enabled) icon.enabled = false;    
+        icon.transform.DOMoveY(transform.position.y + iconHoverHeight, iconHoverFrequency).SetEase(iconHoverEase).SetLoops(-1, LoopType.Yoyo).From();
+    }
+
+    private void Init()
+    {
         itemManager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
         animator = GetComponentInChildren<Animator>();
         coll = GetComponent<Collider>();
         icon = GetComponentInChildren<SpriteRenderer>();
         _coinBurst = GetComponentInChildren<ParticleSystem>();
-    }
-
-    void Start()
-    {
-        if (icon.enabled) icon.enabled = false;    
-        icon.transform.DOMoveY(transform.position.y + iconHoverHeight, iconHoverFrequency).SetEase(iconHoverEase).SetLoops(-1, LoopType.Yoyo).From();
-    }
-
-    void Update()
-    {
-
     }
 
     void OnTriggerEnter(Collider other)
